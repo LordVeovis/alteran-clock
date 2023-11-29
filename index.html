@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>The Destiny's countdown</title>
+	<script
+  src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
+  integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8="
+  crossorigin="anonymous"></script>
+	<style type="text/css">
+		/*<![CDATA[*/
+		@font-face {
+			font-family: "Anquietas";
+			src: url(anquietas.ttf) format("truetype");
+		}
+		
+		html, body {
+			background-color: #000;
+		}
+		
+		#date, #time {
+			font-family: Anquietas;
+			font-size: 5em;
+			
+			/*background: -webkit-linear-gradient(#eee, #333);*/
+			background: -webkit-linear-gradient(top, #676242 0%, #676242 10%, #f7f1b7 20%,#f7f1b7 65%,#676242 75%,#676242 100%);
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+		}
+		/*]]>*/
+	</style>
+</head>
+<body>
+<script>
+/*<![CDATA[*/
+	let dateFormatter = new Intl.DateTimeFormat('fr', {
+		day: 'numeric',
+		month: 'numeric',
+		year: 'numeric'
+	});
+	function getFormattedDate() {
+		let now = new Date();
+
+		return dateFormatter.format(now);
+	}
+
+	let timeFormatter = new Intl.DateTimeFormat('fr', {
+		hour: 'numeric',
+		minute: 'numeric',
+		second: 'numeric'
+	});
+	function getFormattedTime() {
+		let now = new Date();
+
+		return timeFormatter.format(now) + '.' + (now.getMilliseconds() / 10).toFixed(0);
+	}
+
+	$(document).ready(function () {
+		let $time = $('#time');
+		let $date = $('#date');
+
+		$date.text(' ' + getFormattedDate());
+
+		let epochTomorrow = (Math.floor(new Date().getTime()/86400/1000+1))*86400*1000;
+		let untilTomorrow = epochTomorrow - new Date().getTime();
+		window.setTimeout(function () {
+			window.setInterval(function () {
+				$date.text(' ' + getFormattedDate());
+			}, 86400*1000);
+
+		}, untilTomorrow);
+
+		window.setInterval(function () {
+			var now = new Date();
+			/*var t = now.getHours();
+			
+			if (t < 10) {
+				t = '0' + t;
+			}
+			var text = t + ':';
+			
+			t = now.getMinutes();
+			if (t < 10) {
+				t = '0' + t;
+			}
+			
+			text += t + ':';
+			t = now.getSeconds();
+			if (t < 10) {
+				t = '0' + t;
+			}
+			
+			text += t + '.';
+			t = (now.getMilliseconds() / 10).toFixed(0);
+			if (t >= 100) {
+				t /= 10;
+			}
+			if (t < 10) {
+				t = '0' + t;
+			}
+			
+			text += t;
+
+			$time.text(text);*/
+			$time.text(getFormattedTime());
+		}, 30);
+	});
+/*]]>*/
+</script>
+<span id="date">&nbsp;01/01/0100</span>
+<br/>
+<span id="time">00:00:00.00</span>
+</body>
+</html>
